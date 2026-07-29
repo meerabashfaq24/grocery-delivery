@@ -24,10 +24,16 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    res.status(201).json({
-      message: "User registered successfully",
-      user,
-    });
+    const userResponse = {
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+};
+
+res.status(201).json({
+  message: "User registered successfully",
+  user: userResponse,
+});
 
   } catch (error) {
     res.status(500).json({
@@ -71,11 +77,17 @@ const loginUser = async (req, res) => {
       }
     );
 
-    res.json({
-      message: "Login successful",
-      token,
-      user,
-    });
+   const userResponse = {
+  _id: user._id,
+  name: user.name,
+  email: user.email,
+};
+
+res.json({
+  message: "Login successful",
+  token,
+  user: userResponse,
+});
 
   } catch (error) {
 
