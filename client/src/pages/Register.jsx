@@ -28,14 +28,15 @@ export default function Register() {
 
       navigate("/login");
     } catch (error) {
-  console.error("Registration Error:", error);
+      console.error("Registration Error:", error);
 
-  alert(
-    error.response?.data?.message ||
-    error.message ||
-    "Registration Failed"
-  );
-}
+      alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Registration Failed"
+      );
+    }
+  };
 
   return (
     <div style={{ padding: "40px" }}>
@@ -80,4 +81,4 @@ export default function Register() {
       <Link to="/login">Already have an account?</Link>
     </div>
   );
-} }
+}
