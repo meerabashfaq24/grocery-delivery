@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./Products.css";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -41,45 +42,55 @@ export default function Products() {
 };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Products</h1>
+  <div className="products-page">
+    <h1 className="products-title">Fresh Groceries</h1>
 
-      {products.length === 0 ? (
-        <p>No products found.</p>
-      ) : (
-        products.map((product) => (
-          <div
-            key={product._id}
-            style={{
-              border: "1px solid #ddd",
-  borderRadius: "10px",
-  padding: "20px",
-  marginBottom: "20px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          >
-            <h3>{product.name}</h3>
-            <p>{product.description}</p>
-        
-            <p><strong>Price:</strong> ${product.price}</p>
-            <p><strong>Stock:</strong> {product.stock}</p>
+    {products.length === 0 ? (
+      <p>No products found.</p>
+    ) : (
+      <div className="products-grid">
+        {products.map((product) => (
+          <div key={product._id} className="product-card">
 
-       <button
-  onClick={() => addToCart(product._id)}
-  style={{
-    background: "#2e7d32",
-    color: "white",
-    padding: "10px 18px",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-  }}
->
-  Add to Cart
-</button>
+            <img
+              src={
+                product.image ||
+                "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600"
+              }
+              className="product-image"
+            />
+
+            <div className="product-content">
+
+              <div className="product-name">
+                {product.name}
+              </div>
+
+              <div className="product-description">
+                {product.description}
+              </div>
+
+              <div className="price">
+                ${product.price}
+              </div>
+
+              <div className="stock">
+                In Stock: {product.stock}
+              </div>
+
+              <button
+                className="add-btn"
+                onClick={() => addToCart(product._id)}
+              >
+                Add to Cart
+              </button>
+
+            </div>
+
           </div>
-        ))
-      )}
-    </div>
-  );
+        ))}
+      </div>
+    )}
+  </div>
+);
 }

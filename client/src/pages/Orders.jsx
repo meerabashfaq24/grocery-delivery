@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./Products.css";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
@@ -18,37 +19,64 @@ export default function Orders() {
   };
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h1>Orders</h1>
+    <div className="products-page">
+
+      <h1 className="products-title">
+        My Orders
+      </h1>
 
       {orders.length === 0 ? (
-        <p>No Orders Yet</p>
+        <p style={{ textAlign: "center", fontSize: "20px" }}>
+          No Orders Yet
+        </p>
       ) : (
-        orders.map((order) => (
-          <div
-            key={order._id}
-            style={{
-              border: "1px solid #ddd",
-  borderRadius: "10px",
-  padding: "20px",
-  marginBottom: "20px",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            }}
-          >
-            <p>
-              <strong>Status:</strong> {order.status}
-            </p>
+        <div className="products-grid">
 
-            <p>
-              <strong>Total:</strong> ${order.totalPrice}
-            </p>
+          {orders.map((order) => (
 
-            <p>
-              <strong>Items:</strong> {order.products.length}
-            </p>
-          </div>
-        ))
+            <div
+              key={order._id}
+              className="product-card"
+            >
+
+              <div className="product-content">
+
+                <h2 className="product-name">
+                  Order #{order._id.slice(-6)}
+                </h2>
+
+                <p className="stock">
+                  <strong>Status:</strong>{" "}
+                  <span
+                    style={{
+                      color:
+                        order.status === "Delivered"
+                          ? "green"
+                          : "#ff9800",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {order.status}
+                  </span>
+                </p>
+
+                <p className="stock">
+                  <strong>Items:</strong> {order.products.length}
+                </p>
+
+                <p className="price">
+                  Total: ${order.totalPrice}
+                </p>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
       )}
+
     </div>
   );
 }

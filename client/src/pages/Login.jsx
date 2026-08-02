@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
+import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,49 +23,61 @@ export default function Login() {
 
     try {
       const res = await api.post("/auth/login", formData);
-console.log(res.data);
+
       localStorage.setItem("token", res.data.token);
-localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login Successful!");
 
       navigate("/products");
+
     } catch (error) {
       alert(error.response?.data?.message || "Login Failed");
     }
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Login</h1>
+    <div className="auth-container">
+      <div className="auth-card">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
+        <h1>Welcome Back</h1>
 
-        <br /><br />
+        <form onSubmit={handleSubmit}>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
+          <input
+            className="auth-input"
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            onChange={handleChange}
+            required
+          />
 
-        <br /><br />
+          <input
+            className="auth-input"
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            onChange={handleChange}
+            required
+          />
 
-        <button type="submit">Login</button>
-      </form>
+          <button
+            className="auth-btn"
+            type="submit"
+          >
+            Login
+          </button>
 
-      <br />
+        </form>
 
-      <Link to="/register">Create Account</Link>
+        <div className="auth-link">
+          <Link to="/register">
+            Don't have an account? Register
+          </Link>
+        </div>
+
+      </div>
     </div>
   );
 }

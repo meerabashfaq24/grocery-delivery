@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
+import "./Login.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -39,46 +40,56 @@ export default function Register() {
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-      <h1>Register</h1>
+    <div className="auth-container">
+      <div className="auth-card">
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          onChange={handleChange}
-          required
-        />
+        <h1>Create Account</h1>
 
-        <br /><br />
+        <form onSubmit={handleSubmit}>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
+          <input
+            className="auth-input"
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            onChange={handleChange}
+            required
+          />
 
-        <br /><br />
+          <input
+            className="auth-input"
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
+          <input
+            className="auth-input"
+            type="password"
+            name="password"
+            placeholder="Create a password"
+            onChange={handleChange}
+            required
+          />
 
-        <br /><br />
+          <button
+            className="auth-btn"
+            type="submit"
+          >
+            Register
+          </button>
 
-        <button type="submit">Register</button>
-      </form>
+        </form>
 
-      <br />
+        <div className="auth-link">
+          <Link to="/login">
+            Already have an account? Login
+          </Link>
+        </div>
 
-      <Link to="/login">Already have an account?</Link>
+      </div>
     </div>
   );
 }

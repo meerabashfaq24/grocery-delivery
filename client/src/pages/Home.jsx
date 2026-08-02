@@ -1,78 +1,82 @@
 import { Link } from "react-router-dom";
+import "./Home.css";
 
 export default function Home() {
+
   const token = localStorage.getItem("token");
 
   return (
-    <div
-      style={{
-        textAlign: "center",
-        padding: "80px 20px",
-      }}
-    >
-      <h1 style={{ fontSize: "42px", marginBottom: "20px" }}>
-        🛒 Grocery Delivery
-      </h1>
+    <>
 
-      <p
-        style={{
-          fontSize: "20px",
-          marginBottom: "40px",
-          color: "#555",
-        }}
-      >
-        Fresh groceries delivered straight to your doorstep.
-      </p>
+      <section className="hero">
 
-      {token ? (
-        <Link to="/products">
-          <button
-            style={{
-              padding: "12px 25px",
-              fontSize: "18px",
-              cursor: "pointer",
-              background: "#2e7d32",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-            }}
-          >
-            Shop Now
-          </button>
-        </Link>
-      ) : (
-        <div style={{ display: "flex", gap: "20px", justifyContent: "center" }}>
-          <Link to="/login">
-            <button
-              style={{
-                padding: "12px 25px",
-                background: "#2e7d32",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
+        <h1>
+          Fresh Groceries Delivered To Your Doorstep
+        </h1>
+
+        <p>
+          Shop fresh fruits, vegetables, dairy products,
+          bakery items and much more at affordable prices.
+        </p>
+
+        <div className="hero-buttons">
+
+          {token ? (
+
+            <Link
+              to="/products"
+              className="primary-btn"
             >
-              Login
-            </button>
-          </Link>
+              Shop Now
+            </Link>
 
-          <Link to="/register">
-            <button
-              style={{
-                padding: "12px 25px",
-                background: "#1976d2",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
-            >
-              Register
-            </button>
-          </Link>
+          ) : (
+
+            <>
+              <Link
+                to="/login"
+                className="primary-btn"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="secondary-btn"
+              >
+                Register
+              </Link>
+            </>
+
+          )}
+
         </div>
-      )}
-    </div>
+
+      </section>
+
+      <section className="categories">
+
+        <h2>Shop By Category</h2>
+
+        <div className="category-grid">
+
+          <div className="category-card">🥬 Vegetables</div>
+
+          <div className="category-card">🍎 Fruits</div>
+
+          <div className="category-card">🥛 Dairy</div>
+
+          <div className="category-card">🥖 Bakery</div>
+
+          <div className="category-card">🍗 Meat</div>
+
+          <div className="category-card">🌾 Grocery</div>
+
+        </div>
+
+      </section>
+
+    </>
   );
+
 }
