@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../services/api";
 import "./Products.css";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
+const [searchParams] = useSearchParams();
+
+const selectedCategory = searchParams.get("category");
 
   useEffect(() => {
     fetchProducts();
@@ -12,7 +16,25 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       const res = await api.get("/products");
-      setProducts(res.data);
+      let data = res.data;
+
+if (selectedCategory) {
+
+  const categoryMap = {
+    Fruits: ["Apple", "Bananas"],
+    Vegetables: ["Tomatoes", "Potatoes"],
+    Dairy: ["Whole Milk", "Eggs"],
+    Bakery: ["Brown Bread"],
+    Meat: ["Chicken"],
+    Grocery: ["Basmati Rice"],
+  };
+
+  data = data.filter(product =>
+    categoryMap[selectedCategory]?.includes(product.name)
+  );
+}
+
+setProducts(data);
     } catch (error) {
       console.log(error);
     }
@@ -40,10 +62,21 @@ export default function Products() {
     alert(error.response?.data?.message || "Failed to add to cart");
   }
 };
-
+const categoryNames = {
+  "6a681ba15eeed5fa012455f5": "🍎 Fruits",
+  "6a681bf65eeed5fa012455f7": "🥦 Vegetables",
+  "6a6a8151d72c8e24e79b288b": "🥛 Dairy",
+  "6a6a8181d72c8e24e79b288c": "🍞 Bakery",
+  "6a6a819cd72c8e24e79b288d": "🍗 Meat",
+  "6a6a81b0d72c8e24e79b288e": "🍚 Grocery",
+};
   return (
   <div className="products-page">
-    <h1 className="products-title">Fresh Groceries</h1>
+    <h1 className="products-title">
+  {selectedCategory
+    ? `${selectedCategory} Products`
+    : "Fresh Groceries"}
+</h1>
 
     {products.length === 0 ? (
       <p>No products found.</p>
@@ -65,7 +98,9 @@ export default function Products() {
               <div className="product-name">
                 {product.name}
               </div>
-
+            <div className="category-badge">
+            {categoryNames[product.category] || "Category"}
+             </div>
               <div className="product-description">
                 {product.description}
               </div>

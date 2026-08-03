@@ -2,81 +2,96 @@ import { Link } from "react-router-dom";
 import "./Home.css";
 
 export default function Home() {
-
   const token = localStorage.getItem("token");
 
   return (
     <>
-
+      {/* HERO SECTION */}
       <section className="hero">
 
-        <h1>
-          Fresh Groceries Delivered To Your Doorstep
-        </h1>
+        <div className="hero-left">
 
-        <p>
-          Shop fresh fruits, vegetables, dairy products,
-          bakery items and much more at affordable prices.
-        </p>
+          <span className="tag">Fresh Groceries Delivered</span>
 
-        <div className="hero-buttons">
+          <h1>
+            Fresh Food <br /> Delivered To <br /> Your Doorstep
+          </h1>
 
-          {token ? (
+          <p>
+            Shop fresh fruits, vegetables, dairy products and daily essentials
+            at affordable prices with quick delivery.
+          </p>
 
+          <div className="hero-buttons">
             <Link
-              to="/products"
+              to={token ? "/products" : "/login"}
               className="primary-btn"
             >
               Shop Now
             </Link>
 
-          ) : (
+            <Link
+              to="/products"
+              className="secondary-btn"
+            >
+              Browse Products
+            </Link>
+          </div>
 
-            <>
-              <Link
-                to="/login"
-                className="primary-btn"
-              >
-                Login
-              </Link>
+        </div>
 
-              <Link
-                to="/register"
-                className="secondary-btn"
-              >
-                Register
-              </Link>
-            </>
+        <div className="hero-right">
 
-          )}
+          <img
+            src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=900"
+            alt="Groceries"
+          />
 
         </div>
 
       </section>
+
+      {/* CATEGORIES */}
 
       <section className="categories">
 
-        <h2>Shop By Category</h2>
+        <h2>Shop by Category</h2>
 
         <div className="category-grid">
 
-          <div className="category-card">🥬 Vegetables</div>
+          <Link className="category-card" to="/products?category=Fruits">
+  🍎
+  <h3>Fruits</h3>
+</Link>
 
-          <div className="category-card">🍎 Fruits</div>
+<Link className="category-card" to="/products?category=Vegetables">
+  🥦
+  <h3>Vegetables</h3>
+</Link>
 
-          <div className="category-card">🥛 Dairy</div>
+<Link className="category-card" to="/products?category=Dairy">
+  🥛
+  <h3>Dairy</h3>
+</Link>
 
-          <div className="category-card">🥖 Bakery</div>
+<Link className="category-card" to="/products?category=Bakery">
+  🍞
+  <h3>Bakery</h3>
+</Link>
 
-          <div className="category-card">🍗 Meat</div>
+<Link className="category-card" to="/products?category=Meat">
+  🍗
+  <h3>Meat</h3>
+</Link>
 
-          <div className="category-card">🌾 Grocery</div>
-
-        </div>
+<Link className="category-card" to="/products?category=Grocery">
+  🍚
+  <h3>Grocery</h3>
+</Link>
+ </div>
 
       </section>
-
     </>
   );
-
 }
+

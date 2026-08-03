@@ -45,7 +45,7 @@ export default function Cart() {
       );
 
       await api.post("/orders", {
-        user: user?._id,
+      
         products,
         totalPrice,
       });

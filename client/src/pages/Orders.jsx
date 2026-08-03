@@ -9,15 +9,21 @@ export default function Orders() {
     fetchOrders();
   }, []);
 
-  const fetchOrders = async () => {
-    try {
-      const res = await api.get("/orders");
-      setOrders(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const fetchOrders = async () => {
+  try {
+    const token = localStorage.getItem("token");
 
+    const res = await api.get("/orders", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setOrders(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
   return (
     <div className="products-page">
 
