@@ -47,10 +47,16 @@ const fetchOrders = async () => {
 
               <div className="product-content">
 
-                <h2 className="product-name">
-                  Order #{order._id.slice(-6)}
-                </h2>
-
+               <h2
+  className="product-name"
+  style={{
+    color: "#222",
+    fontWeight: "700",
+    marginBottom: "15px",
+  }}
+>
+  Order #{order._id.slice(-6)}
+</h2>
                 <p className="stock">
                   <strong>Status:</strong>{" "}
                   <span

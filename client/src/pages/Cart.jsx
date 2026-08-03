@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import "./Products.css";
-
+import { toast } from "react-toastify";
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Cart() {
     try {
       await api.delete(`/cart/${id}`);
       fetchCart();
-      alert("Item Removed");
+      toast.success("Item Removed");
     } catch (error) {
       console.log(error);
     }
@@ -50,12 +50,12 @@ export default function Cart() {
         totalPrice,
       });
 
-      alert("Order Placed Successfully!");
+      toast.success("Order Placed Successfully!");
       navigate("/orders");
 
     } catch (error) {
       console.log(error);
-      alert(error.response?.data?.message || error.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
