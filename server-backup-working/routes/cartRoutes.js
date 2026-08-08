@@ -11,8 +11,8 @@ const {
 } = require("../controllers/cartController");
 
 router.post("/", protect, addToCart);
-router.get("/", protect, getCart);
-router.put("/:id", protect, updateCart);
-router.delete("/:id", protect, deleteCart);
+router.get("/", getCart);
+router.put("/:id", updateCart);
+router.delete("/:id", deleteCart);
 
 module.exports = router;

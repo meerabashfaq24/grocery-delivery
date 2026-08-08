@@ -105,7 +105,7 @@ const categoryNames = {
               </div>
 
               <div className="price">
-                ${product.price}
+               ${Number(product.price).toFixed(2)}
               </div>
 
               <div className="stock">

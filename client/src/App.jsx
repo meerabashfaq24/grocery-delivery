@@ -9,7 +9,7 @@ import Orders from "./pages/Orders";
 import NotFound from "./pages/NotFound";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import Success from "./pages/Success";
 function App() {
   return (
     <BrowserRouter>
@@ -48,8 +48,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="*" element={<NotFound />} />
+        <Route
+  path="/success"
+  element={
+    <ProtectedRoute>
+      <Success />
+    </ProtectedRoute>
+  }
+  />
+ <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

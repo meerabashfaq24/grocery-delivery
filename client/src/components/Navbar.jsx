@@ -17,9 +17,9 @@ export default function Navbar() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "0 60px",
+        padding: "0 8%",
         background: "#ffffff",
-        boxShadow: "0 2px 10px rgba(0,0,0,.08)",
+        boxShadow: "0 4px 20px rgba(0,0,0,.08)",
         position: "sticky",
         top: 0,
         zIndex: 1000,
@@ -31,7 +31,7 @@ export default function Navbar() {
         style={{
           textDecoration: "none",
           color: "#2e7d32",
-          fontSize: "28px",
+          fontSize: "30px",
           fontWeight: "700",
         }}
       >
@@ -42,7 +42,7 @@ export default function Navbar() {
       <div
         style={{
           display: "flex",
-          gap: "30px",
+          gap: "40px",
           alignItems: "center",
           fontWeight: "500",
         }}
@@ -107,22 +107,28 @@ const linkStyle = {
   textDecoration: "none",
   color: "#444",
   fontSize: "17px",
+  fontWeight: "600",
+  transition: "0.3s",
 };
 
 const greenBtn = {
   background: "#2e7d32",
-  color: "white",
+  color: "#fff",
   border: "none",
-  padding: "10px 22px",
-  borderRadius: "8px",
+  padding: "12px 26px",
+  borderRadius: "12px",
   cursor: "pointer",
+  fontWeight: "600",
+  transition: ".3s",
 };
 
 const outlineBtn = {
-  background: "white",
+  background: "#fff",
   color: "#2e7d32",
   border: "2px solid #2e7d32",
-  padding: "10px 22px",
-  borderRadius: "8px",
+  padding: "12px 26px",
+  borderRadius: "12px",
   cursor: "pointer",
+  fontWeight: "600",
+  transition: ".3s",
 };

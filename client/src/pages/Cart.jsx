@@ -5,7 +5,10 @@ import "./Products.css";
 import { toast } from "react-toastify";
 export default function Cart() {
   const [cart, setCart] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     fetchCart();
@@ -14,6 +17,13 @@ export default function Cart() {
   const fetchCart = async () => {
     try {
       const res = await api.get("/cart");
+console.log("Cart API:", res.data);
+
+setCart(res.data);
+
+      console.log(res.data);
+
+
       setCart(res.data);
     } catch (error) {
       console.log(error);
@@ -44,14 +54,24 @@ export default function Cart() {
         0
       );
 
-      await api.post("/orders", {
-      
-        products,
-        totalPrice,
-      });
+    if (paymentMethod === "cod") {
+  await api.post("/orders", {
+    products,
+    totalPrice,
+     address,
+  });
 
-      toast.success("Order Placed Successfully!");
-      navigate("/orders");
+  toast.success("Order Placed Successfully!");
+  navigate("/orders");
+} else {
+  const res = await api.post("/orders/stripe", {
+    products,
+    totalPrice,
+     address,
+  });
+
+  window.location.replace(res.data.url);
+}
 
     } catch (error) {
       console.log(error);
@@ -72,27 +92,57 @@ export default function Cart() {
       </h1>
 
       {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <div
+  style={{
+    textAlign: "center",
+    padding: "70px 20px",
+  }}
+>
+  <h2>Your cart is empty 🛒</h2>
+  <p>Add some delicious groceries to get started.</p>
+</div>
       ) : (
         <>
           <div className="products-grid">
 
             {cart.map((item) => (
 
-              <div
-                key={item._id}
-                className="product-card"
-              >
+             <div
+  key={item._id}
+  className="product-card"
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+    padding: "20px",
+    minHeight: "160px",
+  }}
+>
 
-                <img
-                  src={
-                    item.product.image ||
-                    "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600"
-                  }
-                  className="product-image"
-                />
+              <img
+  src={
+    item.product?.image ||
+    "https://images.unsplash.com/photo-1542838132-92c53300491e?w=600"
+  }
+  alt={item.product?.name}
+  style={{
+    width: "120px",
+    height: "120px",
+    objectFit: "cover",
+    borderRadius: "12px",
+    margin: "20px auto 0",
+    display: "block",
+  }}
+/>
 
-                <div className="product-content">
+
+                <div
+  className="product-content"
+  style={{
+    flex: 1,
+    padding: "0",
+  }}
+>
 
                   <div className="product-name">
                     {item.product?.name}
@@ -106,13 +156,17 @@ export default function Cart() {
                     ${item.product?.price}
                   </div>
 
-                  <button
-                    className="add-btn"
-                    onClick={() => removeItem(item._id)}
-                    style={{ background: "#d32f2f" }}
-                  >
-                    Remove
-                  </button>
+                 <button
+  className="add-btn"
+  onClick={() => removeItem(item._id)}
+  style={{
+    background: "#d32f2f",
+    width: "140px",
+    padding: "10px",
+  }}
+>
+  Remove
+</button>
 
                 </div>
 
@@ -122,27 +176,109 @@ export default function Cart() {
 
           </div>
 
-          <div
-            style={{
-              marginTop: "40px",
-              textAlign: "center",
-            }}
-          >
-            <h2>
-              Total: ${total.toFixed(2)}
-            </h2>
+         <div
+  style={{
+    margin: "50px auto",
+    maxWidth: "450px",
+    background: "#fff",
+    borderRadius: "18px",
+    padding: "30px",
+    boxShadow: "0 8px 24px rgba(0,0,0,.08)",
+    textAlign: "center",
+  }}
+>
+           <h2
+  style={{
+    color: "#2e7d32",
+    fontSize: "32px",
+    marginBottom: "25px",
+  }}
+>
+  Total: ${total.toFixed(2)}
+</h2>
 
-            <button
-              className="add-btn"
-              style={{
-                maxWidth: "300px",
-                marginTop: "20px",
-              }}
-              onClick={placeOrder}
-            >
-              Place Order
-            </button>
+<div
+  style={{
+    marginTop: "20px",
+    marginBottom: "20px",
+  }}
+>
+  <h3
+  style={{
+    marginBottom: "18px",
+    fontSize: "22px",
+  }}
+>
+  Choose Payment Method
+</h3>
+<h3
+  style={{
+    marginBottom: "12px",
+    fontSize: "22px",
+  }}
+>
+  Delivery Address
+</h3>
 
+<textarea
+  value={address}
+  onChange={(e) => setAddress(e.target.value)}
+  placeholder="Enter your delivery address..."
+  rows="4"
+  style={{
+    width: "100%",
+    padding: "15px",
+    borderRadius: "10px",
+    border: "1px solid #ccc",
+    resize: "none",
+    marginBottom: "25px",
+    fontSize: "16px",
+    boxSizing: "border-box",
+  }}
+/>
+
+ <label
+  style={{
+    marginRight: "30px",
+    fontWeight: "600",
+  }}
+>
+    <input
+      type="radio"
+      value="cod"
+      checked={paymentMethod === "cod"}
+      onChange={(e) => setPaymentMethod(e.target.value)}
+    />
+    {" "}Cash on Delivery
+  </label>
+
+  <label
+  style={{
+    fontWeight: "600",
+  }}
+>
+  <input
+    type="radio"
+    value="stripe"
+    checked={paymentMethod === "stripe"}
+    onChange={(e) => setPaymentMethod(e.target.value)}
+  />
+  {" "}Stripe
+</label>
+</div>
+
+<button
+  className="add-btn"
+  style={{
+  width: "100%",
+  padding: "16px",
+  fontSize: "18px",
+  marginTop: "25px",
+}}
+  onClick={placeOrder}
+>
+  Place Order
+</button>
           </div>
 
         </>

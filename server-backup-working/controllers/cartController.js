@@ -3,9 +3,6 @@ const Cart = require("../models/Cart");
 // Add to Cart
 const addToCart = async (req, res) => {
   try {
-    console.log("Add to cart route reached");
-    console.log("User:", req.user);
-
     const { product, quantity } = req.body;
 
     const cart = await Cart.create({
@@ -14,14 +11,12 @@ const addToCart = async (req, res) => {
       quantity,
     });
 
-    console.log("Cart Created:", cart);
-
     res.status(201).json({
       message: "Added to cart",
       cart,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Cart Error:", error);
     res.status(500).json({
       message: error.message,
     });
@@ -31,18 +26,12 @@ const addToCart = async (req, res) => {
 // Get Cart
 const getCart = async (req, res) => {
   try {
-    console.log("GET CART ROUTE");
-
-    const cart = await Cart.find({
-      user: req.user._id,
-    }).populate("product");
-
-    console.log("Cart Data:", cart);
+    const cart = await Cart.find()
+      .populate("user")
+      .populate("product");
 
     res.json(cart);
   } catch (error) {
-    console.error("GET CART ERROR:", error);
-
     res.status(500).json({
       message: error.message,
     });

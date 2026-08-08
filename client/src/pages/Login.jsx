@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import "./Login.css";
 import { toast } from "react-toastify";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -25,14 +26,13 @@ export default function Login() {
       const res = await api.post("/auth/login", formData);
 
       localStorage.setItem("token", res.data.token);
-       localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
       toast.success("Login Successful!");
 
-navigate("/products");
-      navigate("/products"); 
-
+      navigate("/products");
     } catch (error) {
-     toast.error(error.response?.data?.message || "Login Failed");
+      toast.error(error.response?.data?.message || "Login Failed");
     }
   };
 
@@ -40,7 +40,16 @@ navigate("/products");
     <div className="auth-container">
       <div className="auth-card">
 
-        <h1>Welcome Back</h1>
+        <h1>Welcome Back 👋</h1>
+
+        <p
+          style={{
+            color: "#666",
+            marginBottom: "25px",
+          }}
+        >
+          Login to continue shopping fresh groceries.
+        </p>
 
         <form onSubmit={handleSubmit}>
 
@@ -49,6 +58,7 @@ navigate("/products");
             type="email"
             name="email"
             placeholder="Enter your email"
+            value={formData.email}
             onChange={handleChange}
             required
           />
@@ -58,6 +68,7 @@ navigate("/products");
             type="password"
             name="password"
             placeholder="Enter your password"
+            value={formData.password}
             onChange={handleChange}
             required
           />
@@ -71,9 +82,21 @@ navigate("/products");
 
         </form>
 
-        <div className="auth-link">
-          <Link to="/register">
-            Don't have an account? Register
+        <div
+          className="auth-link"
+          style={{
+            marginTop: "20px",
+          }}
+        >
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            style={{
+              color: "#2e7d32",
+              fontWeight: "600",
+            }}
+          >
+            Register here
           </Link>
         </div>
 

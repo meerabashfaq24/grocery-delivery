@@ -1,6 +1,5 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
-const Cart = require("../models/Cart");
 const Stripe = require("stripe");
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -8,19 +7,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Create Order
 const createOrder = async (req, res) => {
   try {
-    const { products, totalPrice, address } = req.body;
+    const { products, totalPrice } = req.body;
 
     const order = await Order.create({
       user: req.user._id,
       products,
-      totalPrice: Number(totalPrice.toFixed(2)),
-      address,
-      paymentMethod: "COD",
-    });
-
-    // Clear user's cart after successful COD order
-    await Cart.deleteMany({
-      user: req.user._id,
+      totalPrice,
     });
 
     res.status(201).json({
@@ -86,7 +78,7 @@ const placeOrderStripe = async (req, res) => {
   try {
     console.log("Stripe route reached");
 
-    const { products, address  } = req.body;
+    const { products } = req.body;
 console.log("Products received:", products);
 let totalPrice = 0;
 
@@ -101,13 +93,11 @@ for (const item of products) {
   }
 
   totalPrice += product.price * item.quantity;
-  totalPrice = Number(totalPrice.toFixed(2));
 }
 const order = await Order.create({
   user: req.user._id,
   products,
   totalPrice,
-   address,
   paymentMethod: "Stripe",
   paymentStatus: "Pending",
   status: "Pending",
@@ -175,7 +165,7 @@ await order.save();
     });
   }
 };
-
+const Cart = require("../models/Cart");
 
 const stripeWebhook = async (req, res) => {
   const sig = req.headers["stripe-signature"];
@@ -194,30 +184,8 @@ const stripeWebhook = async (req, res) => {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-console.log("Webhook Event:", event.type);
-
-if (event.type === "checkout.session.completed") {
-  console.log("✅ Checkout completed");
-
-  const session = event.data.object;
-
-  console.log("Session Metadata:", session.metadata);
-
-  const { orderId, userId } = session.metadata;
-
-  await Order.findByIdAndUpdate(orderId, {
-    paymentStatus: "Paid",
-    status: "Confirmed",
-  });
-  await Cart.deleteMany({
-  user: userId,
-});
-  console.log("✅ Order updated");
-  await Cart.deleteMany({ user: userId });
-console.log("🛒 Cart cleared");
-
-}
-res.json({ received: true });
+  console.log("Webhook Event:", event.type);
+   res.json({ received: true });
 };
 
  
