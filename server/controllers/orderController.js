@@ -16,6 +16,8 @@ const createOrder = async (req, res) => {
       totalPrice: Number(totalPrice.toFixed(2)),
       address,
       paymentMethod: "COD",
+        paymentStatus: "Pending",
+  status: "Confirmed",
     });
 
     // Clear user's cart after successful COD order
